@@ -133,6 +133,7 @@ namespace PalTrackerTests
 
             Assert.IsType<NoContentResult>(response);
 
+            _repository.Verify(r => r.Delete(1), Times.Once);
             var typedResponse = response as NoContentResult;
 
             Assert.Equal(204, typedResponse.StatusCode);
@@ -147,6 +148,7 @@ namespace PalTrackerTests
 
             Assert.IsType<NotFoundResult>(response);
 
+            _repository.Verify(r => r.Delete(1), Times.Never);
             var typedResponse = response as NotFoundResult;
 
             Assert.Equal(404, typedResponse.StatusCode);
