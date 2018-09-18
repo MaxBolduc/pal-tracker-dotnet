@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
+using Steeltoe.Common.HealthChecks;
+using Steeltoe.Management.CloudFoundry;
+using Steeltoe.Management.Endpoint.Info;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace PalTracker
@@ -35,12 +38,17 @@ namespace PalTracker
            ));
 
            services.AddScoped<ITimeEntryRepository, MySqlTimeEntryRepository>();
+           services.AddSingleton<IHealthContributor, TimeEntryHealthContributor>();
+           services.AddSingleton<IOperationCounter<TimeEntry>, OperationCounter<TimeEntry>>();
+           services.AddSingleton<IInfoContributor, TimeEntryInfoContributor>();
             
            // Register the Swagger generator, defining 1 or more Swagger documents
            services.AddSwaggerGen(c =>
            {
                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
            });
+            
+           services.AddCloudFoundryActuators(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,6 +70,7 @@ namespace PalTracker
             });
             
             app.UseMvc();
+            app.UseCloudFoundryActuators();
         }
     }
 }
