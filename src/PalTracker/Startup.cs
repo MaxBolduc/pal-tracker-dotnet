@@ -41,6 +41,7 @@ namespace PalTracker
            services.AddSingleton<IHealthContributor, TimeEntryHealthContributor>();
            services.AddSingleton<IOperationCounter<TimeEntry>, OperationCounter<TimeEntry>>();
            services.AddSingleton<IInfoContributor, TimeEntryInfoContributor>();
+           services.AddSingleton<IInfoContributor, TestInfoContributor>();
             
            // Register the Swagger generator, defining 1 or more Swagger documents
            services.AddSwaggerGen(c =>
