@@ -19,4 +19,12 @@ namespace PalTracker
             );
         }
     }
+
+    public class TestInfoContributor : IInfoContributor
+    {
+        public void Contribute(IInfoBuilder builder)
+        {
+            builder.WithInfo("Test Contributeur", "today");
+        }
+    }
 }
